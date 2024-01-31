@@ -6,6 +6,7 @@ namespace ZarzadzanieTaskami.Models
 {
     public class ProjectTask
     {
+        [Key]
         public int TaskId { get; set; }
 
         [Required]

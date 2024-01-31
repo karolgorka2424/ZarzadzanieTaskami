@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,12 @@ namespace ZarzadzanieTaskami.Controllers
         // GET: Projekts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Projekt.ToListAsync());
+            var projektsWithTasks = await _context.Projekt
+                .Include(p => p.Tasks)
+                    .ThenInclude(t => t.Komentarze) // Ładowanie komentarzy dla każdego taska
+                .ToListAsync();
+
+            return View(projektsWithTasks);
         }
 
         // GET: Projekts/Details/5
@@ -44,6 +50,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // GET: Projekts/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +59,7 @@ namespace ZarzadzanieTaskami.Controllers
         // POST: Projekts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProjektId,Nazwa")] Projekt projekt)
@@ -66,6 +74,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // GET: Projekts/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -135,6 +144,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // POST: Projekts/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

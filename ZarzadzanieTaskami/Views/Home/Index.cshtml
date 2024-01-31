@@ -3,6 +3,11 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Witamy</h1>
+    <p>w systemie do zarządzania projektami.</p>
+    <div>
+        <a href="@Url.Action("Index", "Projekts")" class="btn btn-primary m-2">Projekty</a>
+        <a href="@Url.Action("Index", "Tasks")" class="btn btn-success m-2">Taski</a>
+        <a href="@Url.Action("Index", "Komentarzs")" class="btn btn-info m-2">Komentarze</a>
+    </div>
 </div>

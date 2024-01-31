@@ -11,6 +11,6 @@ namespace ZarzadzanieTaskami.Models
         public string Nazwa { get; set; }
 
         // Relacja jeden-do-wielu z Task
-        public List<ProjectTask> Taski { get; set; }
+        public List<ProjectTask> Tasks { get; set; }
     }
 }

@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - ZarzadzanieTaskami</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ZarzadzanieTaskami.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -20,10 +19,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Projekts" asp-action="Index">Projekty</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="Index">Zadania</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Komentarzs" asp-action="Index">Komentarze</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -38,10 +40,11 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - ZarzadzanieTaskami - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container text-center">
+            &copy; 2024 - Karol Górka - Projekt z Programowania w ASP.NET
         </div>
     </footer>
+    @* Poniższe skrypty mogą być usunięte, jeśli nie są używane *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

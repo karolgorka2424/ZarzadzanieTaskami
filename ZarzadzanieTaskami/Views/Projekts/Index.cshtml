@@ -9,27 +9,56 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nazwa)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nazwa)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProjektId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProjektId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProjektId">Delete</a>
-            </td>
-        </tr>
+@foreach (var projekt in Model)
+{
+    <h2>@Html.DisplayFor(modelItem => projekt.Nazwa)</h2>
+    <p>
+        <a asp-action="Edit" asp-route-id="@projekt.ProjektId">Edit</a> |
+        <a asp-action="Details" asp-route-id="@projekt.ProjektId">Details</a> |
+        <a asp-action="Delete" asp-route-id="@projekt.ProjektId">Delete</a>
+    </p>
+
+    if (projekt.Tasks != null && projekt.Tasks.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Task Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in projekt.Tasks)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => task.Opis)</td>
+                        <td>@Html.DisplayFor(modelItem => task.CzyZakonczony)</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId">Edit</a> |
+                            <a asp-action="Details" asp-controller="Tasks" asp-route-id="@task.TaskId">Details</a> |
+                            <form asp-action="DeleteConfirmed" asp-controller="Tasks" method="post" class="inline">
+                                <input type="hidden" name="id" value="@task.TaskId" />
+                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?');" />
+                            </form>
+                        </td>
+                    </tr>
+                    @if (task.Komentarze != null && task.Komentarze.Any())
+                    {
+                        <tr>
+                            <td colspan="3">
+                                <strong>Komentarze:</strong>
+                                <ul>
+                                    @foreach (var komentarz in task.Komentarze)
+                                    {
+                                        <li>@Html.DisplayFor(modelItem => komentarz.Tresc)</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
 }
-    </tbody>
-</table>

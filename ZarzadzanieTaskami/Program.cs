@@ -57,110 +57,96 @@ namespace ZarzadzanieTaskami
             using (var scope = app.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
-                await CreateRoles(serviceProvider);
-                await CreateUsers(serviceProvider);
-                await CreateSampleData(serviceProvider); // Dodano wywołanie metody CreateSampleData
+                CreateRoles(serviceProvider);
+                CreateUsers(serviceProvider);
+                CreateSampleData(serviceProvider); // Dodano wywołanie metody CreateSampleData
             }
 
             app.Run();
         }
 
-        public static async CreateRoles(IServiceProvider serviceProvider)
+        public static void CreateRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string[] roleNames = { "Administrator", "Użytkownik" };
             foreach (var roleName in roleNames)
             {
-                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                var roleExist = roleManager.RoleExistsAsync(roleName).Result;
                 if (!roleExist)
                 {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                    roleManager.CreateAsync(new IdentityRole(roleName)).Wait();
                 }
             }
         }
 
-        public static async System.Threading.Tasks.CreateUsers(IServiceProvider serviceProvider)
+        public static void CreateUsers(IServiceProvider serviceProvider)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             // Przykładowi użytkownicy
             var users = new List<(string Email, string Password, string Role)>
-            {
-                ("admin@example.com", "Admin123!", "Administrator"),
-                ("user1@example.com", "User123!", "Użytkownik"),
-                ("user2@example.com", "User123!", "Użytkownik"),
-                ("user3@example.com", "User123!", "Użytkownik"),
-                ("user4@example.com", "User123!", "Użytkownik")
-            };
+    {
+        ("admin@example.com", "Admin123!", "Administrator"),
+        ("user1@example.com", "User123!", "Użytkownik"),
+        ("user2@example.com", "User123!", "Użytkownik"),
+        ("user3@example.com", "User123!", "Użytkownik"),
+        ("user4@example.com", "User123!", "Użytkownik")
+    };
 
             foreach (var userTuple in users)
             {
-                var user = await userManager.FindByEmailAsync(userTuple.Email);
+                var user = userManager.FindByEmailAsync(userTuple.Email).Result;
                 if (user == null)
                 {
                     user = new IdentityUser { UserName = userTuple.Email, Email = userTuple.Email };
-                    var result = await userManager.CreateAsync(user, userTuple.Password);
+                    var result = userManager.CreateAsync(user, userTuple.Password).Result;
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, userTuple.Role);
+                        userManager.AddToRoleAsync(user, userTuple.Role).Wait();
                     }
                 }
             }
         }
-        public static async Task CreateSampleData(IServiceProvider serviceProvider)
+
+        public static void CreateSampleData(IServiceProvider serviceProvider)
         {
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                // Upewnij się, że baza danych istnieje i jest zaktualizowana do najnowszej migracji
                 context.Database.EnsureCreated();
 
-                // Dodaj przykładowe projekty, jeśli jeszcze nie istnieją
-                if (!context.Projekty.Any())
-                {
-                    var projekty = new List<Projekt>
-            {
-                new Projekt { Nazwa = "Projekt Alpha" },
-                new Projekt { Nazwa = "Projekt Beta" },
-                // Dodaj więcej projektów według potrzeb
-            };
-                    context.Projekty.AddRange(projekty);
-                    await context.SaveChangesAsync();
-                }
+                var projekty = new List<Projekt>
+        {
+            new Projekt { Nazwa = "Projekt Alpha" },
+            new Projekt { Nazwa = "Projekt Beta" },
+        };
+                context.Projekt.AddRange(projekty);
+                context.SaveChanges();
 
-                // Dodaj przykładowe taski, jeśli jeszcze nie istnieją
-                if (!context.Taski.Any())
-                {
-                    var projektAlpha = context.Projekty.FirstOrDefault(p => p.Nazwa == "Projekt Alpha");
-                    var projektBeta = context.Projekty.FirstOrDefault(p => p.Nazwa == "Projekt Beta");
+                var projektAlpha = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Alpha");
+                var projektBeta = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Beta");
 
-                    var taski = new List<Task>
-            {
-                new Task { Opis = "Task 1 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = false },
-                new Task { Opis = "Task 2 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = true },
-                new Task { Opis = "Task 1 dla Projektu Beta", ProjektId = projektBeta?.ProjektId ?? 0, CzyZakonczony = false },
-                // Dodaj więcej tasków według potrzeb
-            };
-                    context.Taski.AddRange(taski);
-                    await context.SaveChangesAsync();
-                }
+                var taski = new List<ProjectTask>
+        {
+            new ProjectTask { Opis = "Task 1 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = false },
+            new ProjectTask { Opis = "Task 2 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = true },
+            new ProjectTask { Opis = "Task 1 dla Projektu Beta", ProjektId = projektBeta?.ProjektId ?? 0, CzyZakonczony = false },
+        };
+                context.ProjectTask.AddRange(taski);
+                context.SaveChanges();
 
-                // Dodaj przykładowe komentarze, jeśli jeszcze nie istnieją
-                if (!context.Komentarze.Any())
-                {
-                    var task = context.Taski.FirstOrDefault();
+                var taskDoKomentowania = context.ProjectTask.FirstOrDefault();
 
-                    var komentarze = new List<Komentarz>
-            {
-                new Komentarz { Tresc = "To jest komentarz do taska", TaskId = task?.TaskId ?? 0 },
-                // Dodaj więcej komentarzy według potrzeb
-            };
-                    context.Komentarze.AddRange(komentarze);
-                    await context.SaveChangesAsync();
-                }
+                var komentarze = new List<Komentarz>
+        {
+            new Komentarz { Tresc = "To jest komentarz do taska", TaskId = taskDoKomentowania?.TaskId ?? 0 },
+        };
+                context.Komentarz.AddRange(komentarze);
+                context.SaveChanges();
             }
         }
+
     }
 }
