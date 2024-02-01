@@ -1,13 +1,12 @@
 ﻿@model ZarzadzanieTaskami.Models.ProjectTask
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły zadania";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły zadania</h1>
 
 <div>
-    <h4>Task</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -17,7 +16,7 @@
             @Html.DisplayFor(model => model.Opis)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CzyZakonczony)
+            Status
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CzyZakonczony)
@@ -31,6 +30,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.TaskId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.TaskId">Edytuj</a> |
+    <a asp-action="Index">wróć do listy</a>
 </div>

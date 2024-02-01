@@ -1,10 +1,10 @@
 ﻿@model ZarzadzanieTaskami.Models.Projekt
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły projektu";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły</h1>
 
 <div>
     <h4>Projekt</h4>
@@ -19,6 +19,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ProjektId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ProjektId">Edytuj</a> |
+    <a asp-action="Index">wróć do projektów</a>
 </div>

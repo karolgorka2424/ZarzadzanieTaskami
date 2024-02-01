@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ZarzadzanieTaskami.Models.Projekt>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Projekty";
 }
 
 <h1>Obecne oraz przeszłe projekty</h1>
@@ -13,7 +13,7 @@
 {
     <h2>@Html.DisplayFor(modelItem => projekt.Nazwa)</h2>
     <p>
-        <a asp-controller="Projekts" asp-action="Edit" asp-route-id="ProjektId" class="btn btn-secondary">Edytuj</a> |
+        <a asp-controller="Projekts" asp-action="Edit" asp-route-id="@projekt.ProjektId" class="btn btn-secondary">Edytuj</a> |
         <a asp-action="Details" asp-route-id="@projekt.ProjektId" class="btn btn-info">Szczegóły</a> |
         <a asp-action="Delete" asp-route-id="@projekt.ProjektId" class="btn btn-danger">Usuń</a>
     </p>
