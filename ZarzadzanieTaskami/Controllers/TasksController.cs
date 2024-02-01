@@ -28,6 +28,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // GET: Tasks/Details/5
+        [Authorize(Roles = "Administrator, Użytkownik")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,6 +57,7 @@ namespace ZarzadzanieTaskami.Controllers
         // POST: Tasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TaskId,Opis,CzyZakonczony,ProjektId")] ZarzadzanieTaskami.Models.ProjectTask task)
@@ -65,6 +67,19 @@ namespace ZarzadzanieTaskami.Controllers
                 _context.Add(task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // Tutaj możesz dodać logowanie lub inny sposób, aby zobaczyć, co poszło nie tak
+                // Na przykład:
+                foreach (var entry in ModelState)
+                {
+                    if (entry.Value.Errors.Count > 0)
+                    {
+                        // Log each error
+                        Console.WriteLine($"Key: {entry.Key}, Errors: {string.Join(", ", entry.Value.Errors.Select(e => e.ErrorMessage))}");
+                    }
+                }
             }
             ViewData["ProjektId"] = new SelectList(_context.Projekt, "ProjektId", "Nazwa", task.ProjektId);
             return View(task);
@@ -90,6 +105,7 @@ namespace ZarzadzanieTaskami.Controllers
         // POST: Tasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TaskId,Opis,CzyZakonczony,ProjektId")] ZarzadzanieTaskami.Models.ProjectTask task)

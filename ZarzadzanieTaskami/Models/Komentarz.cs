@@ -12,6 +12,6 @@ namespace ZarzadzanieTaskami.Models
 
         // Klucz obcy dla Task
         public int TaskId { get; set; }
-        public ProjectTask Task { get; set; }
+        public ProjectTask? Task { get; set; }
     }
 }

@@ -4,12 +4,12 @@
     ViewData["Title"] = "Tworzenie zadania";
 }
 
-<h1>Utwórz komentarz</h1>
+<h1>Utwórz zadanie</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Opis" class="control-label"></label>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProjektId" class="control-label">Projekt</label>
-                <select asp-for="ProjektId" class ="form-control" asp-items="ViewBag.ProjektId"></select>
+                <select asp-for="ProjektId" class="form-control" asp-items="ViewBag.ProjektId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Utwórz" class="btn btn-success" />

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZarzadzanieTaskami.Data;
 using ZarzadzanieTaskami.Models;
@@ -27,6 +28,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // GET: Projekts/Details/5
+        [Authorize(Roles = "Administrator, Użytkownik")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +50,7 @@ namespace ZarzadzanieTaskami.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
+
             return View();
         }
 
@@ -64,8 +67,22 @@ namespace ZarzadzanieTaskami.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                // Tutaj możesz dodać logowanie lub inny sposób, aby zobaczyć, co poszło nie tak
+                // Na przykład:
+                foreach (var entry in ModelState)
+                {
+                    if (entry.Value.Errors.Count > 0)
+                    {
+                        // Log each error
+                        Console.WriteLine($"Key: {entry.Key}, Errors: {string.Join(", ", entry.Value.Errors.Select(e => e.ErrorMessage))}");
+                    }
+                }
+            }
             return View(projekt);
         }
+
 
         // GET: Projekts/Edit/5
         [Authorize(Roles = "Administrator")]

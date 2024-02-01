@@ -353,7 +353,7 @@ namespace ZarzadzanieTaskami.Data.Migrations
             modelBuilder.Entity("ZarzadzanieTaskami.Models.ProjectTask", b =>
                 {
                     b.HasOne("ZarzadzanieTaskami.Models.Projekt", "Projekt")
-                        .WithMany("Task")
+                        .WithMany("Tasks")
                         .HasForeignKey("ProjektId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -368,7 +368,7 @@ namespace ZarzadzanieTaskami.Data.Migrations
 
             modelBuilder.Entity("ZarzadzanieTaskami.Models.Projekt", b =>
                 {
-                    b.Navigation("Task");
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

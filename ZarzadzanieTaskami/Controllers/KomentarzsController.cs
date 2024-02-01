@@ -28,6 +28,7 @@ namespace ZarzadzanieTaskami.Controllers
         }
 
         // GET: Komentarzs/Details/5
+        [Authorize(Roles = "Administrator, Użytkownik")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,6 +59,7 @@ namespace ZarzadzanieTaskami.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Create([Bind("KomentarzId,Tresc,TaskId")] Komentarz komentarz)
         {
             if (ModelState.IsValid)
@@ -65,6 +67,19 @@ namespace ZarzadzanieTaskami.Controllers
                 _context.Add(komentarz);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // Tutaj możesz dodać logowanie lub inny sposób, aby zobaczyć, co poszło nie tak
+                // Na przykład:
+                foreach (var entry in ModelState)
+                {
+                    if (entry.Value.Errors.Count > 0)
+                    {
+                        // Log each error
+                        Console.WriteLine($"Key: {entry.Key}, Errors: {string.Join(", ", entry.Value.Errors.Select(e => e.ErrorMessage))}");
+                    }
+                }
             }
             ViewData["TaskId"] = new SelectList(_context.ProjectTask, "TaskId", "Opis", komentarz.TaskId);
             return View(komentarz);
@@ -92,6 +107,7 @@ namespace ZarzadzanieTaskami.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id, [Bind("KomentarzId,Tresc,TaskId")] Komentarz komentarz)
         {
             if (id != komentarz.KomentarzId)

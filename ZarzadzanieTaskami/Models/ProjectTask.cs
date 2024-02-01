@@ -16,9 +16,9 @@ namespace ZarzadzanieTaskami.Models
 
         // Klucz obcy dla Projektu
         public int ProjektId { get; set; }
-        public Projekt Projekt { get; set; }
+        public Projekt? Projekt { get; set; }
 
         // Relacja jeden-do-wielu z Komentarz
-        public List<Komentarz> Komentarze { get; set; }
+        public List<Komentarz>? Komentarze { get; set; }
     }
 }

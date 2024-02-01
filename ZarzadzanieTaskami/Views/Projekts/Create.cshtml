@@ -24,7 +24,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">wróć do projektów</a>
+    @Html.ActionLink("Wróć do projektów", "Index", null, new { @class = "btn btn-secondary" })
 </div>
 
 @section Scripts {

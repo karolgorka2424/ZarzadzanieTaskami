@@ -37,7 +37,7 @@
                         <td>
                             <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId" class="btn btn-secondary">Edytuj</a> |
                             <a asp-action="Details" asp-controller="Tasks" asp-route-id="@task.TaskId" class="btn btn-info">Szczegóły</a> |
-                            <form asp-action="DeleteConfirmed" asp-controller="Tasks" method="post" class="d-inline">
+                            <form asp-action="Delete" asp-controller="Tasks" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@task.TaskId" />
                                 <input type="submit" value="Usuń" class="btn btn-danger" onclick="return confirm('Jesteś pewny że chcesz usunąć?');" />
                             </form>
