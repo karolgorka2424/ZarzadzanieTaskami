@@ -4,18 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Obecne oraz przeszłe projekty</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="Projekts" asp-action="Create" class="btn btn-primary">Stwórz nowy projekt</a>
 </p>
 @foreach (var projekt in Model)
 {
     <h2>@Html.DisplayFor(modelItem => projekt.Nazwa)</h2>
     <p>
-        <a asp-action="Edit" asp-route-id="@projekt.ProjektId">Edit</a> |
-        <a asp-action="Details" asp-route-id="@projekt.ProjektId">Details</a> |
-        <a asp-action="Delete" asp-route-id="@projekt.ProjektId">Delete</a>
+        <a asp-controller="Projekts" asp-action="Edit" asp-route-id="ProjektId" class="btn btn-secondary">Edytuj</a> |
+        <a asp-action="Details" asp-route-id="@projekt.ProjektId" class="btn btn-info">Szczegóły</a> |
+        <a asp-action="Delete" asp-route-id="@projekt.ProjektId" class="btn btn-danger">Usuń</a>
     </p>
 
     if (projekt.Tasks != null && projekt.Tasks.Any())
@@ -23,9 +23,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Task Description</th>
+                    <th>Opis zadania</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th>Akcja</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,11 +35,11 @@
                         <td>@Html.DisplayFor(modelItem => task.Opis)</td>
                         <td>@Html.DisplayFor(modelItem => task.CzyZakonczony)</td>
                         <td>
-                            <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId">Edit</a> |
-                            <a asp-action="Details" asp-controller="Tasks" asp-route-id="@task.TaskId">Details</a> |
-                            <form asp-action="DeleteConfirmed" asp-controller="Tasks" method="post" class="inline">
+                            <a asp-action="Edit" asp-controller="Tasks" asp-route-id="@task.TaskId" class="btn btn-secondary">Edytuj</a> |
+                            <a asp-action="Details" asp-controller="Tasks" asp-route-id="@task.TaskId" class="btn btn-info">Szczegóły</a> |
+                            <form asp-action="DeleteConfirmed" asp-controller="Tasks" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@task.TaskId" />
-                                <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure?');" />
+                                <input type="submit" value="Usuń" class="btn btn-danger" onclick="return confirm('Jesteś pewny że chcesz usunąć?');" />
                             </form>
                         </td>
                     </tr>

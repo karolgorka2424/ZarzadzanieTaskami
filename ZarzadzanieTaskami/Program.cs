@@ -117,34 +117,47 @@ namespace ZarzadzanieTaskami
 
                 context.Database.EnsureCreated();
 
-                var projekty = new List<Projekt>
-        {
-            new Projekt { Nazwa = "Projekt Alpha" },
-            new Projekt { Nazwa = "Projekt Beta" },
-        };
-                context.Projekt.AddRange(projekty);
-                context.SaveChanges();
+                if (!context.Projekt.Any())
+                {
+                    var projekty = new List<Projekt>
+            {
+                new Projekt { Nazwa = "Projekt Alpha" },
+                new Projekt { Nazwa = "Projekt Beta" },
+            };
+                    context.Projekt.AddRange(projekty);
+                    context.SaveChanges();
+                }
 
-                var projektAlpha = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Alpha");
-                var projektBeta = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Beta");
+                if (!context.ProjectTask.Any())
+                {
+                    var projektAlpha = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Alpha");
+                    var projektBeta = context.Projekt.FirstOrDefault(p => p.Nazwa == "Projekt Beta");
 
-                var taski = new List<ProjectTask>
-        {
-            new ProjectTask { Opis = "Task 1 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = false },
-            new ProjectTask { Opis = "Task 2 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = true },
-            new ProjectTask { Opis = "Task 1 dla Projektu Beta", ProjektId = projektBeta?.ProjektId ?? 0, CzyZakonczony = false },
-        };
-                context.ProjectTask.AddRange(taski);
-                context.SaveChanges();
+                    var taski = new List<ProjectTask>
+            {
+                new ProjectTask { Opis = "Task 1 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = false },
+                new ProjectTask { Opis = "Task 2 dla Projektu Alpha", ProjektId = projektAlpha?.ProjektId ?? 0, CzyZakonczony = true },
+                new ProjectTask { Opis = "Task 1 dla Projektu Beta", ProjektId = projektBeta?.ProjektId ?? 0, CzyZakonczony = false },
+            };
+                    context.ProjectTask.AddRange(taski);
+                    context.SaveChanges();
+                }
 
-                var taskDoKomentowania = context.ProjectTask.FirstOrDefault();
+                if (!context.Komentarz.Any())
+                {
+                    var taskDoKomentowania = context.ProjectTask.FirstOrDefault(t => !t.Komentarze.Any());
 
-                var komentarze = new List<Komentarz>
-        {
-            new Komentarz { Tresc = "To jest komentarz do taska", TaskId = taskDoKomentowania?.TaskId ?? 0 },
-        };
-                context.Komentarz.AddRange(komentarze);
-                context.SaveChanges();
+                    if (taskDoKomentowania != null)
+                    {
+                        var komentarze = new List<Komentarz>
+                {
+                    new Komentarz { Tresc = "To jest komentarz do taska", TaskId = taskDoKomentowania.TaskId },
+                };
+                        context.Komentarz.AddRange(komentarze);
+                        context.SaveChanges();
+                    }
+                }
+
             }
         }
 
