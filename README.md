@@ -12,10 +12,12 @@ Microsoft.EntityFrameworkCore.Tools,
 Microsoft.VisualStudio.Web.CodeGeneration.Design,
 
 Przed uruchomieniem ustaw w pliku appsetings.json połączenie z serwerem bazodanowym, następnie utwórz migracje. Komendy do utworzenia migracji w konsoli NuGet Package Manager:
+
 add-migration "Initial Create"
 update-database
 
 Admin oraz testowi użytkownicy powinni zostac automatycznie utworzeni po uruchomieniu projektu.
+
 Dane logowania(email, hasło, rola):
 
         ("admin@example.com", "Admin123!", "Administrator"),
