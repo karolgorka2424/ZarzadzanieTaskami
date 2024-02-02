@@ -17,6 +17,7 @@ update-database
 
 Admin oraz testowi użytkownicy powinni zostac automatycznie utworzeni po uruchomieniu projektu.
 Dane logowania(email, hasło, rola):
+
         ("admin@example.com", "Admin123!", "Administrator"),
         ("user1@example.com", "User123!", "Użytkownik"),
         ("user2@example.com", "User123!", "Użytkownik"),
